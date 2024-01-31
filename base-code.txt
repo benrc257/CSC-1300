@@ -1,0 +1,8 @@
+#include <iostream>
+using namespace std;
+
+/* Function: */
+int main()
+{
+    return 0;
+}
