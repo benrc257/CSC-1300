@@ -12,209 +12,153 @@ the card off.
 #include <iomanip>
 using namespace std;
 
-// Variables
-string cardName, stars(60,'*'), protection;
-double cardBal, minPay, apr, payment, interest, principal, periodic, totint, ogMinPay;
-char getCardInfoOutcome;
-int month;
-bool monthlimit;
+int main() {
 
-// Functions
-int getCardName() // Gets the Card Provider from the User
-{
-    cout << endl <<  "Please enter the name of your credit card provider, then press enter: ";
-    getline(cin,cardName);
-    cout << endl << "Is your credit card provider " << cardName << "? (y/n) ";
-    cin >> getCardInfoOutcome;
-    cin.ignore();
-    if (getCardInfoOutcome == 'y' || getCardInfoOutcome == 'Y'){
-        return 0;
-    } else if (getCardInfoOutcome == 'n' || getCardInfoOutcome == 'N') {
-        return 1;
-    } else if (isdigit(getCardInfoOutcome)) {
-        cout << endl << "Please enter a Y or N, silly. Now you have to try again!" << endl;
-        cin >> protection; // protection in case you're extra silly and somehow enter numbers!!
-        return 1;
-    } else {
-         cout << endl << "Please enter a Y or N, silly. Now you have to try again!" << endl;
-        return 1;
-    }
-}
+    //variables
+    char check;
+    string card, stars(60,'*'), lines(57, '-');
+    double bal, startingBal, apr, min, startingMin, periodic, interest, principal;
+    double totalInterest = 0;
+    int month = 0;
 
-int getCardBal() // Gets the Card Balance from the User
-{
-    cout << endl <<  "Please enter the balance of your credit card (between 0 and 99999.99 and with only two decimal places), then press enter: ";
-    cin >> cardBal;
-    if (cardBal >= 0 && cardBal <= 99999.99){
-        cout << endl << "Is your card balance $" << fixed << setprecision(2) << cardBal << "? (y/n) ";
-        cin >> getCardInfoOutcome;
-        if (getCardInfoOutcome == 'y' || getCardInfoOutcome == 'Y'){
-            return 0;
-        } else if (getCardInfoOutcome == 'n' || getCardInfoOutcome == 'N') {
-            return 1;
-        } else if (isdigit(getCardInfoOutcome)) {
-            cout << endl << "Please enter a Y or N, silly. Now you have to try again!" << endl;
-            cin >> protection; // protection in case you're extra silly and somehow enter numbers!!
-            return 1;
-        } else {
-            cout << endl << "Please enter a Y or N, silly. Now you have to try again!" << endl;
-            return 1;
+    //welcome message
+    cout << endl << stars << endl; 
+    cout << endl << "This program will take information about your credit card and";
+    cout << endl << "calculate how long it will take to pay it off." << endl;
+    cout << endl << lines << endl;
+
+    //collecting inputs from user:
+
+    //card name input
+    do {
+        cout << endl << "Please input the name of your credit card: ";
+        getline(cin, card);
+        cout << endl << "Your card's name is " << card << ". Is this correct? (y/n) ";
+        cin >> check;
+        cin.ignore();
+    } while (check != 'y' && check != 'Y');
+
+    cout << endl << lines << endl;
+
+    //card balance input
+    do {
+        cout << endl << "Please input the balance on your card (between $0 and $99999.99 with up to two decimal places): ";
+        cin >> bal;
+        cout << endl << "Your card's balance is $" << fixed << setprecision(2) << bal << ". Is this correct? (y/n) ";
+        cin >> check;
+        if (bal < 0 || bal > 99999.99) {
+            cout << endl << "Invalid balance. Please try again." << endl;
+            check = 'n';
         }
-    } else {
-        cout << endl << "Invalid balance detected. Please try again." << endl;
-        return 1;
-    }
+    } while (check != 'y' && check != 'Y');
     
-}
-
-int getCardAPR() // Gets the Card APR from the User
-{
-    cout << endl <<  "Please enter the APR of your credit card (between 0 and 100) WITHOUT a percentage sign and with up to two decimal places, then press enter: ";
-    cin >> apr;
-    if (apr >= 0 && apr <= 100.00){
-        cout << endl << "Is your card APR " << fixed << setprecision(2) << apr << "%? (y/n) ";
-        cin >> getCardInfoOutcome;
-        if (getCardInfoOutcome == 'y' || getCardInfoOutcome == 'Y'){
-            return 0;
-        } else if (getCardInfoOutcome == 'n' || getCardInfoOutcome == 'N') {
-            return 1;
-        } else if (isdigit(getCardInfoOutcome)) {
-            cout << endl << "Please enter a Y or N, silly. Now you have to try again!" << endl;
-            cin >> protection; // protection in case you're extra silly and somehow enter numbers!!
-            return 1;
-        } else {
-            cout << endl << "Please enter a Y or N, silly. Now you have to try again!" << endl;
-            return 1;
-        }
-    } else {
-        cout << endl << "Invalid APR value detected. Please try again." << endl;
-        cin >> protection; // protection in case you're extra and somehow enter numbers!!
-        return 1;
-    }
+    cout << endl << lines << endl;
     
-}
-
-int getCardMin() // Gets the Card Minimum Payment from the User
-{
-    cout << endl <<  "Please enter the Minimum Payment for your credit card (between 0 and 99999.99 and with only two decimal places) WITHOUT the dollar sign, then press enter: ";
-    cin >> minPay;
-    ogMinPay = minPay;
-    if (minPay >= 0 && minPay <= 99999.99){
-        cout << endl << "Is your card's minimum payment $" << fixed << setprecision(2) << minPay << "? (y/n) ";
-        cin >> getCardInfoOutcome;
-        if (getCardInfoOutcome == 'y' || getCardInfoOutcome == 'Y'){
-            return 0;
-        } else if (getCardInfoOutcome == 'n' || getCardInfoOutcome == 'N') {
-            return 1;
-        } else if (isdigit(getCardInfoOutcome)) {
-            cout << endl << "Please enter a Y or N, silly. Now you have to try again!" << endl;
-            cin >> protection; // protection in case you're extra silly and somehow enter numbers!!
-            return 1;
-        } else {
-            cout << endl << "Please enter a Y or N, silly. Now you have to try again!" << endl;
-            return 1;
+    //card apr input
+    do {
+        cout << endl << "Please input the APR of your card (between 0% and 100% with up to two decimal places): ";
+        cin >> apr;
+        cout << endl << "Your card's APR is " << fixed << setprecision(2) << apr << "%. Is this correct? (y/n) ";
+        cin >> check;
+        if (apr < 0 || apr > 100) {
+            cout << endl << "Invalid APR. Please try again." << endl;
+            check = 'n';
         }
-    } else {
-        cout << endl << "Invalid Minimum Payment value detected. Please try again." << endl;
-        return 1;
-    }
+    } while (check != 'y' && check != 'Y');
     
-}
-
-int print() // Prints information about the card on a monthly basis
-{
-    cout << "Month " << setfill(' ') << setw(2) << month << ":  ";
-    cout << fixed << setprecision(2);
-    cout << "$" << setfill(' ') << setw(8) << minPay << "   ";
-    cout << "$" << setfill(' ') << setw(8) << interest << "   ";
-    cout << "$" << setfill(' ') << setw(8) << principal << "   ";
-    cout << "$" << setfill(' ') << setw(8) << cardBal << endl;
-    return 0;
-}
-
-int calculate() // Outputs the Payment, Interest, Principal, and Balance as variables
-{
-    cout << fixed << setprecision(2);
-    interest = cardBal*periodic*30.42;
-    cardBal = cardBal+interest-minPay;
-    totint = totint+interest;
-    if (cardBal <= 0) {
-        minPay = cardBal+minPay;
-        principal = minPay-interest;
-        cardBal = 0.00;
-        return 0;
-    } else {
-        month = month+1;
-        principal = minPay-interest;
-        if (month < 21){
-            print();
-        } else {
-            monthlimit = true;
+    cout << endl << lines << endl;
+    
+    //card mininum payment input
+    do {
+        cout << endl << "Please input the minimum payment for your card (between $0 and $99999.99 with up to two decimal places): ";
+        cin >> min;
+        cout << endl << "Your card's minimum payment is $" << fixed << setprecision(2) << min << ". Is this correct? (y/n) ";
+        cin >> check;
+        if (min < 0 || min > 99999.99) {
+            cout << endl << "Invalid minimum payment. Please try again." << endl;
+            check = 'n';
         }
-        return 1;
-    }
-}
-
-int main()
-{
-    // Initializes variables for later
-        month = 0;
-        monthlimit = false;
-
-    // Write Out Stars
+    } while (check != 'y' && check != 'Y');
+    
     cout << endl << stars << endl;
-    cout << endl << "This program will take your credit card information then compute how long" << endl << "it will take to pay it off, as well as the total interest acrued." << endl;
 
-    // Gets Card Provider Name from User until successful
-    while(getCardName() != 0);
+    //prints collected information
+    cout << endl << "Name of Your Card: " << card;
+    cout << endl << "Current Balance: $" << bal;
+    cout << endl << "Annual Percentage Rate (APR): " << apr << "%";
+    cout << endl << "Monthly Minimum Payment: $" << min << endl;
+    cout << endl << lines;
     
-    // Gets Card Balance from User until successful
-    while(getCardBal() != 0);
+    //chart setup
+    cout << endl << "            Payment     Interest    Principal   Balance";
+    cout << endl << lines;
+    cout << endl << "                                                $" << setfill(' ') << setw(8) << bal << endl;
 
-    // Gets Card APR from User until successful
-    while(getCardAPR() != 0);
+    //math and rest of chart printing
+    periodic = apr / 365 * .01;
+    double days = 30.42; //average days in a month
+    startingBal = bal; //saves the inputed balance for following if statements
+    startingMin = min; //saves the inputed minimum payment for the final message
 
-    // Gets Card Minimum Payment from User until successful
-    while(getCardMin() != 0);
+    do {
+        interest = bal * periodic * days;
+        bal = bal + interest - min;
+        totalInterest = totalInterest + interest;
+        month++;
 
-    // Outputs the card name and information in a list
-    cout << endl << stars << endl;
-    cout << endl << "Name of the Credit Card Provider: " << cardName << endl;
-    cout << endl << "Current Balance: $" << cardBal << endl;
-    cout << endl << "Annual Percentage Rate (APR): " << apr << "%" << endl;
-    cout << endl << "Monthly Minimum Payment: $" << minPay << endl;
-    cout << endl << stars << endl;
-    
-    // Math and Chart Printing
-    cout << endl << "           Payment     Interest    Principal   Balance" << endl;
-    cout << endl << "                                               $" << setfill(' ') << setw(8) << cardBal << endl;
-    
-    periodic = apr/365*0.01; // Calculates periodic rate for the calculate() function
-
-    while (cardBal > 0 && principal >= 0) {calculate();} // Prints the graph
-
-    if (monthlimit == true) {
-        cout << "..." << endl;
-    } // If the number of months goes over 20, this will trigger and only show months 1-20 and the last month
-
-    if (principal >= 0 && month > 1) {
-        month = month+1;
-        print();
-        cout << endl << "With a monthly payment of $" << ogMinPay << " you will pay off your current balance in " << month << " months." << endl;
-    } else if (principal >= 0) {
-        if (month > 1) {
-            cout << endl << "With a monthly payment of $" << ogMinPay << " you will pay off your current balance in " << month << " months." << endl;
-        } else {
-            cout << endl << "With a monthly payment of $" << ogMinPay << " you will pay off your current balance in " << month << " month." << endl;
+        if (bal <= 0) {
+            min = bal+min;
+            principal = min-interest;
+            bal = 0;
         }
-    } else if (principal < 0) {
-        cout << endl << "With a monthly payment of $" << ogMinPay << " you will never pay off your current balance, and it will continually get larger.";
-        cout << endl << "You can either increase your monthly payment or create a generational wealth blackhole." << endl;
-    } else {
-        cout << endl << "Error! Shutting down..." << endl;
-        return 1;
-    } // Handles the final message and all its quirks
 
+        principal = min - interest;
+
+        if (month <= 30) {
+            cout << "Month " << setfill(' ') << setw(3) << month << ":  ";
+            cout << fixed << setprecision(2);
+            cout << "$" << setfill(' ') << setw(8) << min << "   ";
+            cout << "$" << setfill(' ') << setw(8) << interest << "   ";
+            cout << "$" << setfill(' ') << setw(8) << principal << "   ";
+            cout << "$" << setfill(' ') << setw(8) << bal << endl;
+        } else if (month == 32) {
+            cout << "..." << endl;
+        }
+    } while(bal > 0.00999 && bal <= startingBal && month <= 120);
+    //bal is compared to 0.00999 in order to combat an issue with a balance equivalent to 0.00
+    //after setprecision rounding not ending the loop (ie. 0.007 -> 0.00)
+
+    //If during printing, the number of months exceeded 30, then it halts printing. This prints the last month calculated.
+    if (month > 30) {
+        cout << "Month " << setfill(' ') << setw(3) << month << ":  ";
+        cout << fixed << setprecision(2);
+        cout << "$" << setfill(' ') << setw(8) << min << "   ";
+        cout << "$" << setfill(' ') << setw(8) << interest << "   ";
+        cout << "$" << setfill(' ') << setw(8) << principal << "   ";
+        cout << "$" << setfill(' ') << setw(8) << bal << endl;
+    }
+
+    cout << endl << lines << endl;
+
+    // handles the ending message for five possible outcomes of the chart's while loop
+    if (bal == startingBal) {
+        cout << endl << "With a monthly payment of $" << startingMin << ", the balance on your card will stay";
+        cout << endl << "stagnant and never be paid off. You should consider increasing your monthly payment." << endl; 
+    } else if (bal > startingBal) {
+        cout << endl << "With a monthly payment of $" << startingMin << ", the balance on your card will continually";
+        cout << endl << "grow and never be paid off. You should consider increasing your monthly payment." << endl;
+    } else if (month > 120) {
+        cout << endl << "With a monthly payment of $" << startingMin << ", the balance on your card will take more";
+        cout << endl << "than 10 years to pay off. You should consider increasing your monthly payment." << endl;
+    } else if (month == 1) {
+        cout << endl << "With a monthly payment of $" << startingMin << ", the balance on your card will be fully";
+        cout << endl << "paid off in " << month << " month, with a total accrued interest of $" << totalInterest << "." << endl;
+    } else {
+        cout << endl << "With a monthly payment of $" << startingMin << ", the balance on your card will be fully";
+        cout << endl << "paid off in " << month << " months, with a total accrued interest of $" << totalInterest << "." << endl;
+    }
+
+    // prints stars, ends program
     cout << endl << stars << endl;
     return 0;
 }
