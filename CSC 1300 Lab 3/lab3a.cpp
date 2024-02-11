@@ -9,12 +9,12 @@
 #include <cmath>
 using namespace std;
 
-//variables
-double screenTime, studyTime;
-string stars(50,'*');
-
 int main()
 {
+    //variables
+    double screenTime, studyTime;
+    string stars(50,'*');
+
     cout << endl << stars << endl;
     cout << fixed << setprecision(1);
 

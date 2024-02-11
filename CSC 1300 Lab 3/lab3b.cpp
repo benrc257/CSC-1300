@@ -10,13 +10,13 @@
 using namespace std;
 
 int main()
-{
+{	
 	char grade;
 
 	cout << "What grade will you earn on this lab assignment?" << endl;
 	cout << "GRADE: ";
 	cin >> grade;
-	grade = toupper(grade);
+	grade = toupper(grade); // capitalizes the grade
 
 	switch(grade) {
 		case 'A':
