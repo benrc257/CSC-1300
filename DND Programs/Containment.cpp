@@ -48,7 +48,9 @@ int main() {
     cout << "\nTime before ignition runs out.\n";
     this_thread::sleep_for(chrono::milliseconds(1500));
     cout << "Do not allow ignition.\n";
-    this_thread::sleep_for(chrono::milliseconds(3000));
+    this_thread::sleep_for(chrono::milliseconds(2000));
     cout << "\n(o)\n";
-    cout << "/|\\" << endl;
+    this_thread::sleep_for(chrono::milliseconds(10000));
+
+    return 0;
 }
