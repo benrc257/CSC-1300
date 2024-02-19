@@ -51,6 +51,4 @@ int main() {
     this_thread::sleep_for(chrono::milliseconds(2000));
     cout << "\n(o)\n";
     this_thread::sleep_for(chrono::milliseconds(10000));
-
-    return 0;
 }
