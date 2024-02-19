@@ -2,7 +2,9 @@
     "files.associations": {
         "iostream": "cpp",
         "ostream": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "iosfwd": "cpp",
+        "charconv": "cpp"
     },
     "git.ignoreLimitWarning": true
 }
