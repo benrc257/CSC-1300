@@ -137,20 +137,20 @@ void enterSales() {
             break;
         }
 
-        //prompts the user for the number of items
-        cout << "\nPlease enter the number of items sold: ";
-        while (!(cin >> items)) {
-            cin.clear();
-            cin.ignore(10000, '\n');
-            cout << "\nInvalid input. Please enter a whole number: ";
-        }
-
         //prompts the user for the price of the items
         cout << "\nPlease enter the price of the item: $";
         while (!(cin >> price)) {
             cin.clear();
             cin.ignore(10000, '\n');
             cout << "\nInvalid input. Please enter the price of the item: $";
+        }
+
+        //prompts the user for the number of items
+        cout << "\nPlease enter the number of items sold: ";
+        while (!(cin >> items)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "\nInvalid input. Please enter a whole number: ";
         }
 
         //calculates the total price of the items and adds tax
