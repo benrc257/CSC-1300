@@ -82,7 +82,10 @@ int main() {
     return 0;
 }
 
-//prints marvel ascii art
+/* 
+    Name: printArt()
+    Purpose: Prints marvel ascii art to the screen
+*/
 void printArt() {
     cout << "._____.______.......________......________......___......___.._______.......___..........\n";
     cout << "|\\..._.\\.._...\\....|\\...__..\\....|\\...__..\\....|\\..\\..../../||\\..___.\\.....|\\..\\.........\n";
@@ -94,7 +97,10 @@ void printArt() {
     return;
 }
 
-//allows the user to enter sale data
+/* 
+    Name: enterSales()
+    Purpose: Allows the user to enter sales data
+*/
 void enterSales() {
     //variables
     ofstream file;
@@ -167,7 +173,10 @@ void enterSales() {
     return;
 }
 
-//allows the user to total all sales
+/* 
+    Name: totalSales()
+    Purpose: Totals all sales data and displays it as a chart
+*/
 void totalSales() {
     //variables
     const string lines(40,'-');
