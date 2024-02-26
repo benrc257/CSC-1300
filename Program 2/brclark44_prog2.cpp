@@ -9,10 +9,78 @@ the user's choices.
 #include <fstream>
 #include <ctime>
 #include <iomanip>
+#include <cctype>
 using namespace std;
 
 //Global Constants
 const double TAX = .0975;
+
+//Function prototypes
+void printArt();
+void enterSales();
+void totalSales();
+
+int main() {
+
+    //Variables
+    const string lines(90,'-');
+    int choice;
+    bool exit = false;
+    char confirm;
+    
+    //printing ascii art
+    cout << endl;
+    printArt();
+
+    //printing dashes for beginning of program
+    cout << endl << lines << endl;
+
+    //menus
+    do {
+        //prints main menu and validates user's choice
+        cout << "\nPlease select from the following menu items:";
+        cout << "\n\t1. Enter Sales";
+        cout << "\n\t2. Total the Daily Sales";
+        cout << "\n\t3. Delete Today's Sales";
+        cout << "\n\t4. End Program";
+        cout << "\n\n\tCHOOSE 1-4: ";
+        while (!(cin >> choice) || (choice < 1 || choice > 4)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "\nInvalid choice. Please select a number between 1 and 4: ";
+        }
+
+        //handles the outcome of the user's choice
+        switch (choice) {
+            case 1: enterSales();
+                    break;
+            case 2: totalSales();
+                    break;
+            case 3: cout << "\nAre you sure you want to delete today's sales data? (y/n) ";
+
+                    while (!(cin >> confirm) || (!(tolower(confirm) == 'y')) && !(tolower(confirm) == 'n')) {
+                        cin.clear();
+                        cin.ignore(10000, '\n');
+                        cout << "\nInvalid choice. Please select y or n: ";
+                    }
+
+                    if (tolower(confirm) == 'y' && !(remove("sales.txt"))) {
+                        cout << "\nThe sales data was deleted successfully.\n";
+                    } else if (tolower(confirm) == 'y' && remove("sales.txt")) {
+                        cout << "\n\"sales.txt\" does not exist or was not found.\n";
+                    } else {
+                        cout << "\nThe sales data was not deleted.\n";
+                    }
+                    break;
+            case 4: cout << "\nExiting program..."; 
+                    exit = true; // this ends the do while loop
+        }
+    } while (exit == false);
+
+    // printing lines and ending program
+    cout << endl << lines << endl;
+    return 0;
+}
 
 //prints marvel ascii art
 void printArt() {
@@ -29,212 +97,124 @@ void printArt() {
 //allows the user to enter sale data
 void enterSales() {
     //variables
-    ofstream activeFile;
-    int choice, sold;
-    char confirm;
-    double sales, salesTax;
+    ofstream file;
+    int choice;
+    double items, price, sales;
     bool exit = false;
-    string department;
-    
-    //opens the file
-    activeFile.open("sales.txt", ios::app);
-    if (activeFile.is_open() == false) {
-        cout << "\nCould not open or find sales.txt, or it does not exist. Returning to main menu.\n";
+
+    //opens sales.txt
+    file.open("sales.txt", ios::app);
+    if (!file.is_open()) {
+        cout << "\n\"sales.txt\" could not be found or opened. Returning to main menu...\n";
         return;
     }
 
+    //sales menu
     do {
-        //resets choice to 0 to avoid conflict with menus
-        choice = 0;
-
-        //menu
-        do {
-            cout << "\nPlease select a department:"
-                 << "\n  1. Guardians of the Galaxy"
-                 << "\n  2. Spider-Man"
-                 << "\n  3. Doctor Strange"
-                 << "\n  4. Return to main menu"
-                 << "\n\n CHOOSE 1-4: ";
-            cin >> choice;
-            if (choice < 1 || choice > 4) {
-                cout << "\nInvalid input. Please enter a number between 1 and 4.\n";
-            }
-        } while (choice < 1 || choice > 4);
-
-        //handles user input from menu
-        switch (choice) {
-            case 1: department = "Guardians of the Galaxy";
-                    break;
-            case 2: department = "Spider-Man";
-                    break;
-            case 3: department = "Doctor Strange";
-                    break;
-            case 4: exit = true; //this breaks the loop
-                    cout << "\nReturning to main menu.\n";
+        //prints menu and validates user's choice
+        cout << "\nPlease select from the following departments:";
+        cout << "\n\t1. Guardians of the Galaxy";
+        cout << "\n\t2. Spider-Man";
+        cout << "\n\t3. Doctor Strange";
+        cout << "\n\t4. Return to Main Menu";
+        cout << "\n\n\tCHOOSE 1-4: ";
+        while (!(cin >> choice) || (choice < 1 || choice > 4)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "\nInvalid choice. Please select a number between 1 and 4: ";
         }
-        
-        //detects that exit is true and stops the current loop, allowing the loop to properly end
-        if (exit == true) {
+
+        // breaks the do while loop if the user selects option 4
+        if (choice == 4) {
+            cout << "\nReturning to main menu...\n";
+            exit == true;
             break;
         }
 
-        //inputs the sales and department to the output file
-        activeFile << department << endl;
-        do {
+        //prompts the user for the number of items
         cout << "\nPlease enter the number of items sold: ";
-        cin >> sold;
-        cout << "\nThe number of items sold is " << sold << ". Is this correct? (y/n) ";
-        cin >> confirm;
-        if (confirm != 'y' && confirm != 'Y') {
-            cout << "\nYou entered no. Please correct the number of items sold.\n";
+        while (!(cin >> items)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "\nInvalid input. Please enter a whole number: ";
         }
-        } while (confirm != 'y' && confirm != 'Y');
 
-        do {
-        cout << "\nPlease enter the price of the item, as a number with two decimal places: $";
-        cin >> sales;
-        cout << "\nThe price of the item is $" << fixed << setprecision(2) << sales << ". Is this correct? (y/n) ";
-        cin >> confirm;
-        if (confirm != 'y' && confirm != 'Y') {
-            cout << "\nYou entered no. Please correct the sales number.\n";
+        //prompts the user for the price of the items
+        cout << "\nPlease enter the price of the item: $";
+        while (!(cin >> price)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "\nInvalid input. Please enter the price of the item: $";
         }
-        } while (confirm != 'y' && confirm != 'Y');
-        
-        cout << "\nThe number of items sold was " << sold << " and the price was $" << fixed << setprecision(2) << sales << " per item.";
-        salesTax = (sold*sales)*TAX;
-        sales = (sales*sold)+salesTax;
-        cout << "\nThe total price after tax is $"  << fixed << setprecision(2) << sales << ".";
 
-        //outputs sale data to file
-        activeFile << fixed << setprecision(2) << sales << endl;
-        cout << "\nSales data has been recorded to \"sales.txt\".\n";
+        //calculates the total price of the items and adds tax
+        sales = (price * items) + ((price * items ) * TAX);
 
-    } while (exit != true);
+        //handles the printing of sales data to sales.txt
+        switch (choice) {
+            case 1: file << "Guardians of the Galaxy\n";
+                    break;
+            case 2: file << "Spider-Man\n";
+                    break;
+            case 3: file << "Doctor Strange\n";
+        }
+        file << fixed << setprecision(2) << sales << "\n";
 
+    } while (exit == false);
+    
     //closes file, ends function
-    activeFile.close();
+    file.close();
     return;
 }
 
 //allows the user to total all sales
 void totalSales() {
     //variables
-    ifstream activeFile;
+    const string lines(40,'-');
+    ifstream file;
     time_t rawtime;
-    string department, lines(38,'-');
-    double guardian = 0; 
-    double spider = 0;
-    double strange = 0;
-    double sales = 0;
+    string department;
+    double sales, total, guardians = 0, spider = 0, doctor = 0;
 
-    //opens file
-    activeFile.open("sales.txt");
-    if (activeFile.is_open() == false) {
-        cout << "\nCould not open or find sales.txt, or it does not exist. Returning to main menu.\n";
+    //opens sales.txt
+    file.open("sales.txt");
+    if (!file.is_open()) {
+        cout << "\n\"sales.txt\" could not be found or opened. Returning to main menu...\n";
         return;
     }
 
-    //gets the totals
-    do {
-        getline(activeFile, department);
-        activeFile >> sales;
-        activeFile.ignore();
+    //reads the department's name, then adds the sales to the correct counter
+    while (getline(file, department)) {
         if (department == "Guardians of the Galaxy") {
-            guardian+=sales;
+            file >> sales;
+            guardians+=sales;
         } else if (department == "Spider-Man") {
+            file >> sales;
             spider+=sales;
-        } else if (department == "Doctor Strange") {
-            strange+=sales;
-        }
-    } while (!activeFile.eof());
-
-    //gets the time and prints it
-    time(&rawtime);
-    cout << "\nTOTAL SALES ON " << ctime(&rawtime);
-
-    //prints totals
-    cout << lines;
-    cout << fixed << setprecision(2);
-    cout << "\nGuardians of the Galaxy: $" << setw(12) << setfill(' ') << guardian;
-    cout << "\n             Spider-Man: $" << setw(12) << setfill(' ') << spider;
-    cout << "\n         Doctor Strange: $" << setw(12) << setfill(' ') << strange;
-    cout << "\n                  Total: $" << setw(12) << setfill(' ') << guardian + spider + strange;
-    cout << endl << lines << endl;
-
-    //closes file and ends function
-    activeFile.close();
-    return;
-}
-
-//allows the user to delete today's sale data
-void deleteSales() {
-    char confirm;
-
-    //confirms the user wants to delete the file
-    cout << "\nYOU ARE ATTEMPTING TO DELETE ALL SALES DATA FROM \"sales.txt\". Proceed? (y/n) ";
-    cin >> confirm;
-
-    //deletes the file if the user enters yes
-    if (confirm == 'y' || confirm == 'Y') {
-        if(remove("sales.txt")) {
-            cout << "\nCould not delete or find sales.txt, or it does not exist.\n";
         } else {
-            cout << "\nThe file was deleted successfully.\n";
+            file >> sales;
+            doctor+=sales;
         }
-    } else {
-        cout << "\nThe file was not deleted.\n";
+        file.ignore();
     }
 
-    //function ends
+    //totals all of the sales
+    total = guardians + spider + doctor;
+
+    //gets the time for printing
+    time(&rawtime);
+
+    //prints the time, then the chart with the total prices
+    cout << "\nTOTAL SALES ON " << ctime(&rawtime) << "\n";
+    cout << lines << "\n";
+    cout << fixed << setprecision(2);
+    cout << "Guardians of the Galaxy: $" << setw(12) << setfill(' ') << guardians << "\n";
+    cout << "             Spider-Man: $" << setw(12) << setfill(' ') << spider << "\n";
+    cout << "         Doctor Strange: $" << setw(12) << setfill(' ') << doctor << "\n";
+    cout << "                  Total: $" << setw(12) << setfill(' ') << total << "\n";
+    cout << lines << "\n";
+
+    //closes file, ends function
+    file.close();
     return;
-}
-
-int main() {
-
-    //Variables
-    string lines(90,'-');
-    bool exit = false;
-    int choice;
-    
-    //printing ascii art
-    cout << endl;
-    printArt();
-
-    //printing dashes for beginning of program
-    cout << endl << lines << endl;
-
-    //menu stuff
-    do {
-        //resets choice to 0 to avoid conflict with menus
-        choice = 0;
-
-        //main menu
-        do {
-            cout << "\nPlease select one of the following:"
-                 << "\n  1. Enter sales"
-                 << "\n  2. Total the daily sales"
-                 << "\n  3. Delete today's sales"
-                 << "\n  4. End Program"
-                 << "\n\n CHOOSE 1-4: ";
-            cin >> choice;
-            if (choice < 1 || choice > 4) {
-                cout << "\nInvalid input. Please enter a number between 1 and 4.\n";
-            }
-        } while (choice < 1 || choice > 4);
-
-        //handles user input from main menu
-        switch (choice) {
-            case 1: enterSales();
-                    break;
-            case 2: totalSales();
-                    break;
-            case 3: deleteSales();
-                    break;
-            case 4: exit = true;
-        }
-    } while (exit != true);
-
-    // printing lines and ending program
-    cout << endl << lines << endl;
-    return 0;
 }
