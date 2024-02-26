@@ -13,7 +13,8 @@ int main() {
     //variables
     ofstream outfile;
     string stars(50,'*');
-    int choice; 
+    int choice;
+    bool discount; 
     double items;
     const double pPrice = 20.00;
     const double fPrice = 2.00;
@@ -32,6 +33,7 @@ int main() {
 
     //opening output file
     outfile.open("restaurant.txt", ios::app);
+    outfile << "Beginning order:";
 
     //ordering system
     do {
@@ -45,8 +47,8 @@ int main() {
             cout << endl << "4 - Done Ordering";
             cout << endl << "Enter 1-4: ";
             cin >> choice;
-            if (choice > 5 || choice < 0) {
-                cout << endl << endl << "Please enter a number between 1 and 4." << endl; 
+            if (choice > 4 || choice < 0) {
+                cout << endl << "Please enter a number between 1 and 4." << endl; 
             }
         }
     
@@ -62,10 +64,11 @@ int main() {
                     total = total+((items*pPrice));
                     if (pudding == 0) {
                         total-=4;
+                        discount = true;
                     }
                     pudding+=items;
-                    cout << endl << items << " bread pudding(s) were added. Please select the number of fruit toppings (+$2.00/topping) for each: " << endl;
-                    outfile << endl << items << " bread pudding(s) were added. The total is now $" << fixed << setprecision(2) << total;
+                    cout << endl << fixed << setprecision(0) << items << " bread pudding(s) were added. Please select the number of fruit toppings (+$2.00/topping) for each: " << endl;
+                    outfile << endl << fixed << setprecision(0) << items << " bread pudding(s) were added. The total is now $" << fixed << setprecision(2) << total;
                     for (int count = 1, ogItems = items; count <= ogItems; count++) {
                         cout << "How many fruit toppings on bread pudding " << count << "? ";
                         do {
@@ -75,9 +78,14 @@ int main() {
                             }
                         } while(items < 0);
                         fruit+=items;
-                        total = total+((items*fPrice));
-                        cout << endl << items << " fruit topping(s) were added. Your total is now $" << fixed << setprecision(2) << total;
-                        outfile << endl << items << " fruit topping(s) were added. The total is now $" << fixed << setprecision(2) << total;
+                        if (discount){
+                            total = total+((items*fPrice)-((items*fPrice)*0.2));
+                            discount = false;
+                        } else {
+                            total = total+((items*fPrice));
+                        }
+                        cout << endl << fixed << setprecision(0) << items << " fruit topping(s) were added. Your total is now $" << fixed << setprecision(2) << total << endl;
+                        outfile << endl << fixed << setprecision(0) << items << " fruit topping(s) were added. The total is now $" << fixed << setprecision(2) << total;
                     }
                    
                     break;
@@ -93,8 +101,8 @@ int main() {
                         total-=2.25;
                     }
                     beef+=items;
-                    cout << endl << items << " corned beef(s) were added. Your total is now $" << fixed << setprecision(2) << total;
-                    outfile << endl << items << " corned beef(s) were added. The total is now $" << fixed << setprecision(2) << total;
+                    cout << endl << fixed << setprecision(0) << items << " corned beef(s) were added. Your total is now $" << fixed << setprecision(2) << total;
+                    outfile << endl << fixed << setprecision(0) << items << " corned beef(s) were added. The total is now $" << fixed << setprecision(2) << total;
                     break;
             case 3: cout << endl << "You selected fried cabbage. How many would you like to order? ";
                     do {
@@ -108,17 +116,17 @@ int main() {
                         total-=1;
                     }
                     cabbage+=items;
-                    cout << endl << items << " fried cabbage(s) were added. Your total is now $" << fixed << setprecision(2) << total;
-                    outfile << endl << items << " fried cabbage(s) were added. The total is now $" << fixed << setprecision(2) << total;
+                    cout << endl << fixed << setprecision(0) << items << " fried cabbage(s) were added. Your total is now $" << fixed << setprecision(2) << total;
+                    outfile << endl << fixed << setprecision(0) << items << " fried cabbage(s) were added. The total is now $" << fixed << setprecision(2) << total;
                     break;
             case 4: cout << endl << "Ordering complete. Your total is: $" << fixed << setprecision(2) << total;
                     outfile << endl << "Ordering complete. The total is: $" << fixed << setprecision(2) << total;
                     break;
         }
     } while(choice !=4);
-
+    
     outfile.close();
     //ends program, prints stars
-    cout << endl << stars;
+    cout << endl << stars << endl;
     return 0;
 }
