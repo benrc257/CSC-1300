@@ -52,10 +52,13 @@ int main() {
 
         //handles the outcome of the user's choice
         switch (choice) {
+            //allows the user to enter sales data
             case 1: enterSales();
                     break;
+            //totals the sales from the file
             case 2: totalSales();
                     break;
+            //deletes the sales file
             case 3: cout << "\nAre you sure you want to delete today's sales data? (y/n) ";
 
                     while (!(cin >> confirm) || (!(tolower(confirm) == 'y')) && !(tolower(confirm) == 'n')) {
@@ -72,6 +75,7 @@ int main() {
                         cout << "\nThe sales data was not deleted.\n";
                     }
                     break;
+            //ends program
             case 4: cout << "\nExiting program..."; 
                     exit = true; // this ends the do while loop
         }
