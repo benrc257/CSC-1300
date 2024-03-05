@@ -114,7 +114,7 @@ void enterSales() {
 
     //opens sales.txt
     file.open("sales.txt", ios::app);
-    if (!file.is_open()) {
+    if (!file.is_open() || !file.good()) {
         cout << "\n\"sales.txt\" could not be found or opened. Returning to main menu...\n";
         return;
     }
@@ -191,7 +191,7 @@ void totalSales() {
 
     //opens sales.txt
     file.open("sales.txt");
-    if (!file.is_open()) {
+    if (!file.is_open() || !file.good()) {
         cout << "\n\"sales.txt\" could not be found or opened. Returning to main menu...\n";
         return;
     }
