@@ -63,7 +63,7 @@ int main() {
     //ending message
     cout << "\nEnding program. Your final score was: " << score << "!";
 
-    if (score > 3) {
+    if (score > 2) {
         cout << " Amazing job!\n";
     } else {
         cout << " You still have more to learn.\n";
