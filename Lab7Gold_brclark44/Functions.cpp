@@ -46,7 +46,7 @@ void test (int& score, int type) {
     int choice;
 
     //starting message
-    cout << endl << lines << "\nQuiz Time!";
+    cout << lines << "\nQuiz Time!";
 
     //Gives a different question based on the previous animal facts given
     switch (type) {
