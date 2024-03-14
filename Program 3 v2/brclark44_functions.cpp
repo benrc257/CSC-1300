@@ -25,7 +25,7 @@ int getData(string first[], string last[], double hours[], string filename, int 
 
     //places the data from the file into the arrays for as long as i is less than the
     //max size of the arrays and the file has no errors and has not ended
-    for (int i = 0; i < size, infile.good(); i++) {
+    for (int i = 0; i < size && infile.good(); i++) {
         getline(infile, first[i], ',');
         getline(infile, last[i], ',');
         infile >> hours[i];
@@ -33,8 +33,7 @@ int getData(string first[], string last[], double hours[], string filename, int 
         count = i;
     }
 
-    //fills the next slot in the hours array with -1 and returns the number of students found in the file
-    hours[count] = -1;
+    //returns the number of students found in the file
     return count;
 }
 
@@ -88,11 +87,13 @@ void printArray(string first[], string last[], double hours[], int size) {
     cout << "\n| Avg. Hours Per Day | First Name | Last Name |";
     cout << "\n***********************************************";
 
-    //prints through the array until it reaches a -1
+    //prints through the array until it reaches the end
     cout << fixed << setprecision(2);
-    for (int i = 0; i < size, hours[i] != -1; i++) {
-        cout << "\n" << setw(21) << setfill(' ') << hours[i] << setw(13) << setfill(' ') << first[i] << last[i];
-    }
+    for (int i = 0; i < size; i++) {
+		if (hours[i] != 0) {
+        	cout << "\n" << setw(21) << setfill(' ') << left << hours[i] << setw(13) << setfill(' ') << left << first[i] << last[i];
+		}
+	}
     cout << "\n";
 }
 
@@ -102,7 +103,20 @@ void printArray(string first[], string last[], double hours[], int size) {
                 the array.
 */
 double getAverage(double hours[], int size) {
-    return 1;
+    //variables
+	double totalHours = 0;
+	int count = 0;
+
+	//counts the number of values in the set and adds them together
+	for (int i = 0; i < size; i++) {
+		if (hours[i] != 0) {
+        	count++;
+		}
+		totalHours += hours[i];
+	}
+
+	//returns the average
+	return totalHours/count;
 }
 
 /*
@@ -111,7 +125,28 @@ double getAverage(double hours[], int size) {
                 the array.
 */
 double getMedian(double hours[], int size) {
-    return 1;
+	//variables
+	int count = 0;
+	double median;
+	
+	//counts the number of values in the hours array
+	for (int i = 0; i < size; i++) {
+		if (hours[i] != 0) {
+        	count++;
+		}
+	}
+
+	//finds if the count is even or odd
+	//if even, the two middle values are averaged
+	if ((count % 2) == 0) {
+		median = (hours[size - (count/2)] + hours[(size - (count/2)) - 1]) / 2;
+	} else {
+		median = hours[size - (count/2)];
+	}
+
+
+	//returns the median
+    return median;
 }
 
 /*
@@ -120,5 +155,39 @@ double getMedian(double hours[], int size) {
                 the array.
 */
 double getMode(double hours[], int size) {
-    return 1;
+	//variables
+	int count = 0, highestCount = 0;
+	double mode;
+
+	//for loop goes through each slot of the array
+	for (int i = 0; i < size; i++) {
+		//skips over values of 0 and ensures that hours[i-1] doesn't access hours[-1] and crash.
+		//if the current value of hours[] isn't 0 and it isn't the first value in the array,
+		//then the current value in the array is checked against the last. if they are different,
+		//the count is set to 1. if they are the same, the count increases by 1.
+		if (!(hours[i] <= 0) && ((i - 1) > -1)) {
+			if (hours[i] != hours[i - 1]) {
+				count = 1;
+			} else {
+				count++;
+			}
+		} else if (!(hours[i] <= 0)) {
+			count = 1;
+		}
+
+		//if the current count is higher than the highest count reached in previous loops,
+		//the current value in the array is marked as the mode. it stays as the mode until
+		//the highest count is surpassed again.
+		if (count > highestCount) {
+			highestCount = count;
+			mode = hours[i];
+		}
+	}
+
+	//only returns the mode if the count surpassed 1
+	if (highestCount > 1) {
+		return mode;
+	}
+	
+	return -1;
 }
