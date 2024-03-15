@@ -36,6 +36,7 @@ int getData(string first[], string last[], double hours[], string& filename, int
         count = i;
     }
 
+	infile.close();
     //returns the number of students found in the file
     return count;
 }
