@@ -12,7 +12,7 @@
 	Purpose:	To retrieve data from the given file and
                 place it into three arrays.
 */
-int getData(string first[], string last[], double hours[], string& filename, int size) {
+int getData(string first[], string last[], double hours[], string& filename) {
     //variables
     ifstream infile;
     int count;
@@ -28,7 +28,7 @@ int getData(string first[], string last[], double hours[], string& filename, int
 
     //places the data from the file into the arrays for as long as i is less than the
     //max size of the arrays and the file has no errors and has not ended
-    for (int i = 0; i < size && infile.good(); i++) {
+    for (int i = 0; i < SIZE && infile.good(); i++) {
         getline(infile, first[i], ',');
         getline(infile, last[i], ',');
         infile >> hours[i];
@@ -49,17 +49,17 @@ int getData(string first[], string last[], double hours[], string& filename, int
 				to also sort the name arrays at the same 
 				time.
 */
-void selectionSort(string lastName[], string firstName[], double hoursSM[], int size)
+void selectionSort(string lastName[], string firstName[], double hoursSM[])
 {
 	int start, minIndex;
 	double minValue;
 	string nameTemp;
 
-	for (start = 0; start < (size - 1); start++)
+	for (start = 0; start < (SIZE - 1); start++)
 	{
 		minIndex = start;
 		minValue = hoursSM[start];
-		for(int index = start + 1; index < size; index++)
+		for(int index = start + 1; index < SIZE; index++)
 		{
 			if (hoursSM[index] < minValue)
 			{
@@ -86,14 +86,14 @@ void selectionSort(string lastName[], string firstName[], double hoursSM[], int 
 	Purpose:	Prints the data from the arrays
                 into a chart.
 */
-void printArray(string first[], string last[], double hours[], int size) {
+void printArray(string first[], string last[], double hours[]) {
 
     cout << "\n| Avg. Hours Per Day | First Name | Last Name |";
     cout << "\n***********************************************";
 
     //prints through the array until it reaches the end
     cout << fixed << setprecision(2);
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < SIZE; i++) {
 		if (hours[i] != 0) {
         	cout << "\n" << setw(21) << setfill(' ') << left << hours[i] << setw(13) << setfill(' ') << left << first[i] << last[i];
 		}
@@ -106,13 +106,13 @@ void printArray(string first[], string last[], double hours[], int size) {
 	Purpose:	Returns the average hours from
                 the array.
 */
-double getAverage(double hours[], int size) {
+double getAverage(double hours[]) {
     //variables
 	double totalHours = 0;
 	int count = 0;
 
 	//counts the number of values in the set and adds them together
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < SIZE; i++) {
 		if (hours[i] != 0) {
         	count++;
 		}
@@ -128,13 +128,13 @@ double getAverage(double hours[], int size) {
 	Purpose:	Returns the median hours from
                 the array.
 */
-double getMedian(double hours[], int size) {
+double getMedian(double hours[]) {
 	//variables
 	int count = 0;
 	double median;
 	
 	//counts the number of values in the hours array
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < SIZE; i++) {
 		if (hours[i] != 0) {
         	count++;
 		}
@@ -143,9 +143,9 @@ double getMedian(double hours[], int size) {
 	//finds if the count is even or odd
 	//if even, the two middle values are averaged
 	if ((count % 2) == 0) {
-		median = (hours[size - (count/2)] + hours[(size - (count/2)) - 1]) / 2;
+		median = (hours[SIZE - (count/2)] + hours[(SIZE - (count/2)) - 1]) / 2;
 	} else {
-		median = hours[size - (count/2)];
+		median = hours[SIZE - (count/2)];
 	}
 
 
@@ -158,13 +158,13 @@ double getMedian(double hours[], int size) {
 	Purpose:	Returns the mode hours from
                 the array.
 */
-double getMode(double hours[], int size) {
+double getMode(double hours[]) {
 	//variables
 	int count = 0, highestCount = 0;
 	double mode;
 
 	//for loop goes through each slot of the array
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < SIZE; i++) {
 		//skips over values of 0 and ensures that hours[i-1] doesn't access hours[-1] and crash.
 		//if the current value of hours[] isn't 0 and it isn't the first value in the array,
 		//then the current value in the array is checked against the last. if they are different,
