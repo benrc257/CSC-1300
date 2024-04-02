@@ -31,6 +31,7 @@ int main() {
         dinoTotal = 0;
     }
 
+    
 
     return 0;
 }
