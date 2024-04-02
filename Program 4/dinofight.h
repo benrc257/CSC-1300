@@ -7,7 +7,6 @@
 #include <cctype>
 using namespace std;
 
-
 //structures
 struct Stats {
     int hit;
