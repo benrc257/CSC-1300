@@ -15,12 +15,12 @@
 using namespace std;
 
 //function prototypes
-int getData(string [], string [], double [], string&, int);
-void selectionSort(string [], string [], double [], int);
-void printArray(string [], string [], double [], int);
-double getAverage(double [], int);
-double getMedian(double [], int);
-double getMode(double [], int);
+int getData(string [], string [], double [], string&);
+void selectionSort(string [], string [], double []);
+void printArray(string [], string [], double []);
+double getAverage(double []);
+double getMedian(double []);
+double getMode(double []);
 
 //global variables
 const int SIZE = 200;

@@ -29,7 +29,7 @@ int main() {
 
         cout << "\n*****SOCIAL MEDIA STATISTICAL DATA PROGRAM*****\n";
 
-        getDataResults = getData(first, last, hours, filename, SIZE);
+        getDataResults = getData(first, last, hours, filename);
             
         //detects if getDataResults ran successfully and runs the program
         if (getDataResults == -1) {
@@ -42,19 +42,19 @@ int main() {
             cout << "\nData entered from the file in ascending\norder of hours spent on social media:\n";
                 
             //sorts data in arrays
-            selectionSort(first, last, hours, SIZE);
+            selectionSort(first, last, hours);
 
             //prints chart with data
-            printArray(first, last, hours, SIZE);
+            printArray(first, last, hours);
 
-            getModeResults = getMode(hours, SIZE);
+            getModeResults = getMode(hours);
 
 
             //prints statistics from the data
             cout << "\n*****STATISTICS FOR TIME SPENT ON SOCIAL MEDIA*****\n";
             cout << fixed << setprecision(4);
-            cout << "\nAverage: " << getAverage(hours, SIZE) << " hours";
-            cout << "\nMedian: " << getMedian(hours, SIZE) << " hours";
+            cout << "\nAverage: " << getAverage(hours) << " hours";
+            cout << "\nMedian: " << getMedian(hours) << " hours";
             if (getModeResults != -1) {
                 cout << "\nMode: " << getModeResults << " hours";
             } else {
