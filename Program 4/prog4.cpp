@@ -2,7 +2,7 @@
 
 int main() {
     //variables
-    int size, dinoTotal;
+    int size, total, choice;
     string stars(80, '*');
 
     //prints art to screen
@@ -25,13 +25,41 @@ int main() {
     //calls preloadDinos to load existing dinos from the file assigned to FILENAME
     //and find the existing number of dinos. Displays an error if FILENAME could not
     //be opened
-    dinoTotal = preloadDinos(Dino, size);
-    if (dinoTotal == -1) {
+    total = preloadDinos(Dino, size);
+    if (total == -1) {
         cout << "\n" << FILENAME << " could not be opened.\n";
-        dinoTotal = 0;
+        total = 0;
     }
 
-    
+    //prints main menu and validates user's choice, then executes the corresponding function
+    do {
+        cout << "\nSelect 1-4: ";
+        cout << "\n1. Enter Dinosaurs";
+        cout << "\n2. Print Dinosaurs";
+        cout << "\n3. FIGHT!";
+        cout << "\n4. End Program";
+        cout << "\n>> ";
+            while (!(cin >> choice) || (choice < 1 || choice > 4)) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "\nInvalid choice. Please enter a number between 1 and 4: ";
+            }
+        switch (choice){
+            case 1:
+                enterDinos(Dino, size, total);
+                break;
+            case 2:
+                printDinos(Dino, total);
+                break;
+            case 3:
+                //fight();
+                break;
+            case 4:
+                break;
+        }
+    } while (choice != 4);
+
+    //saveToFile();
 
     return 0;
 }

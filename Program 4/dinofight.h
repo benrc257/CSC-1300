@@ -22,7 +22,7 @@ struct Dinos {
 //function prototypes
 void printArt();
 int preloadDinos(Dinos [], int);
-//---- enterDinos();
+void enterDinos(Dinos [], int, int&);
 void printDinos(Dinos [], int);
 //---- fight();
 //---- saveToFile();
