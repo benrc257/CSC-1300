@@ -2,8 +2,7 @@
 
 int main() {
     //variables
-    int size = 0, dinoTotal;
-    Dinos Dino[size];
+    int size, dinoTotal;
     string stars(80, '*');
 
     //prints art to screen
@@ -20,16 +19,19 @@ int main() {
         }
     } while (size < 1);
 
+    //declares the Dino[] array to be of the size given by the user
+    Dinos Dino[size];
+
     //calls preloadDinos to load existing dinos from the file assigned to FILENAME
     //and find the existing number of dinos. Displays an error if FILENAME could not
     //be opened
     dinoTotal = preloadDinos(Dino, size);
-    if (dinoTotal = -1) {
+    if (dinoTotal == -1) {
         cout << "\n" << FILENAME << " could not be opened.\n";
+        dinoTotal = 0;
     }
 
-    //temp
-    printDinos(Dino, dinoTotal);
+    
 
     return 0;
 }
