@@ -20,9 +20,9 @@ void printArt()
 /*
     Name: preloadDinos()
     Purpose: Loads in the data from the file (set by global constant FILENAME in dinofight.h)
-    into the Dino[] array
+    into the *Dino array
 */
-int preloadDinos(Dinos Dino[], int size) {
+int preloadDinos(Dinos *Dino, int size) {
     //variables
     ifstream file;
     int total = 0;
@@ -61,7 +61,7 @@ int preloadDinos(Dinos Dino[], int size) {
     Name: enterDinos()
     Purpose: Adds Dinos to the array and increments the total number of dinos
 */
-void enterDinos(Dinos Dino[], int size, int& total) {
+void enterDinos(Dinos *Dino, int size, int& total) {
     //variables
     char choice;
 
@@ -139,7 +139,7 @@ void enterDinos(Dinos Dino[], int size, int& total) {
     Name: printDinos()
     Purpose: Displays all dinos currently in the array
 */
-void printDinos(Dinos Dino[], int total) {
+void printDinos(Dinos *Dino, int total) {
     //variables
     string lines(40, '-');
 
@@ -159,4 +159,94 @@ void printDinos(Dinos Dino[], int total) {
         cout << "Health: " << Dino[i].stats.health << "\n";
     }
     cout << lines << "******************" << lines << endl;
+}
+
+/*
+    Name: fight()
+    Purpose: Allows the user to select two dinos and have them fight, then updates the remaining total of dinos
+*/
+void fight(Dinos *Dino, int total) {
+    //variables
+    int choice;
+    Dinos *dino1 = NULL, *dino2 = NULL, **hitter, **reciver;
+    bool running = true, alive = true;
+    int order, attack;
+
+    //seed random number generator for later
+    srand(time(0));
+
+    do {
+        //displaying fight welcome text
+        cout << "\nDINO FIGHT BEGINNING!";
+
+        //checking to see if there are at least 2 dinos
+        if (total < 2) {
+            cout << "\n\nThere must be at least two dinosaurs in the arena to fight.";
+            cout << "\nSelect option 1 to add more dinos! Returning to main menu...\n";
+            return;
+        }
+
+        //continuinging fight welcome text
+        cout << " CHOOSE YOUR FIGHTERS.\n";
+
+        //displaying menu text
+        cout << "\nPlease select the two dinosaurs you would like to fight:";
+
+        //displaying names
+        for (int i = 0; i < total; i++) {
+            cout << "\n" << i+1 << ": " << Dino[i].name << " the " << Dino[i].type;
+        }
+
+        //receiving and validating the user's first choice
+        cout << "\n\nSelect the first dinosaur.";
+        cout << "\n>> ";
+        do {
+            if (!(cin >> choice) || (choice < 1 || choice > total)) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "Invalid choice. Please select a whole number between 1 and " << total << ".\n";
+                choice = -1;
+            }
+        } while (choice < 1 || choice > total);
+
+        //assigns dino1 to the memory address of the second dino
+        dino1 = &Dino[(choice-1)];
+        cout << "\nFighter " << choice << ", " << (*dino1).name << " the " << (*dino1).type << ", selected!";
+
+        //receiving and validating the user's second choice
+        cout << "\n\nSelect the second dinosaur.";
+        cout << "\n>> ";
+        do {
+            if (!(cin >> choice) || (choice < 1 || choice > total)) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "Invalid choice. Please select a whole number between 1 and " << total << ".\n";
+                choice = -1;
+            }
+        } while (choice < 1 || choice > total);
+
+        //assigns dino2 to the memory address of the second dino
+        dino2 = &Dino[(choice-1)];
+        cout << "\nFighter " << choice << ", " << (*dino2).name << " the " << (*dino2).type << ", selected!";
+
+        //FIGHTING BEGINS HERE
+        cout << "READY, SET, FIGHT!";
+        
+        //for loop runs three times or until a dino dies
+        for (int i=0; (i < 2 && alive); i++) {
+            //generates the random order of attack
+            order = rand()%(2)+1;
+            cout << endl << order << endl;
+
+            if (order == 2) {
+
+            } else {
+
+            }
+
+
+
+        }
+
+    } while (running);
 }

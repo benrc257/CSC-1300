@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <cctype>
+#include <ctime>
 using namespace std;
 
 //structures
@@ -21,10 +22,11 @@ struct Dinos {
 
 //function prototypes
 void printArt();
-int preloadDinos(Dinos [], int);
-void enterDinos(Dinos [], int, int&);
-void printDinos(Dinos [], int);
-//---- fight();
+int preloadDinos(Dinos *, int);
+void enterDinos(Dinos *, int, int&);
+void printDinos(Dinos *, int);
+void fight(Dinos *, int);
+void deleteDino(Dinos *, int&);
 //---- saveToFile();
 
 //global constants
