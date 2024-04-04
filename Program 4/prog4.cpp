@@ -11,16 +11,8 @@ int main() {
     cout << stars << endl;
 
     //ask the user for the capacity of the Dino[] array
-    do {
-        cout << "\nPlease enter the maximum capacity of the dino arena (this must be a whole number): ";
-
-        if (!(cin >> size) || size < 1) {
-            cin.clear();
-            cin.ignore(10000, '\n');
-            cout << "Invalid capacity. Please enter a whole number greater than 0.\n";
-            size = -1;
-        }
-    } while (size < 1);
+    cout << "\nPlease enter the maximum capacity of the dino arena (this must be a whole number): ";
+    size = getValidateInput(1, "capacity");
 
     //initializes the Dino pointer to be a dynamically allocated array of the size given by the user
     Dino = new Dinos[size];
@@ -44,12 +36,8 @@ int main() {
         cout << "\n4. End Program";
         cout << "\n>> ";
 
-        //choice validation
-        while (!(cin >> choice) || (choice < 1 || choice > 4)) {
-            cin.clear();
-            cin.ignore(10000, '\n');
-            cout << "\nInvalid choice. Please enter a number between 1 and 4: ";
-        }
+        //choice retrieval and validation
+        choice = getValidateInput(1, 4, "selection");
         
         //choice execution
         switch (choice){

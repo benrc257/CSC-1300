@@ -22,11 +22,15 @@ struct Dinos {
 
 //function prototypes
 void printArt();
+void delay(int);
+int getValidateInput(int, int, string);
+int getValidateInput(int, string);
+int getValidateInput(char, char, string);
 int preloadDinos(Dinos *, int);
 void enterDinos(Dinos *, int, int&);
 void printDinos(Dinos *, int);
-void fight(Dinos *, int);
-void deleteDino(Dinos *, int&);
+void deleteDino(Dinos *, Dinos *, int&);
+void fight(Dinos *, int&);
 //---- saveToFile();
 
 //global constants
