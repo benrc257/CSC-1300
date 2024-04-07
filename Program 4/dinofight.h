@@ -1,3 +1,11 @@
+/*
+	Title: dinofight.h
+	Author: Benjamin Clark
+	Date: 4/1/24
+	Purpose: This program allows the user to add dinosaurs to an arena
+    and have them fight. This is the header file.
+*/
+
 #ifndef DINOFIGHT_H
 #define DINOFIGHT_H
 
@@ -27,14 +35,14 @@ int getValidateInput(int, int, string);
 int getValidateInput(int, string);
 int getValidateInput(char, char, string);
 int preloadDinos(Dinos *, int);
-void enterDinos(Dinos *, int, int&);
+int enterDinos(Dinos *, int, int);
 void printDinos(Dinos *, int);
-void deleteDino(Dinos *, Dinos *, int&);
-void fight(Dinos *, int&);
-//---- saveToFile();
+int deleteDino(Dinos *, Dinos *, int);
+int fight(Dinos *, int);
+void saveToFile(Dinos *, int);
 
 //global constants
-//FILENAME is made a global constant so the program's preload file can be changed between runs
-const string FILENAME = "dinosaurs-sample.txt";
+//FILENAME is made a global constant so the program's storage file can be changed between runs
+const string FILENAME = "dinosaurs.txt";
 
 #endif

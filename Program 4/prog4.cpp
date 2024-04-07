@@ -1,3 +1,11 @@
+/*
+	Title: prog4.cpp
+	Author: Benjamin Clark
+	Date: 4/1/24
+	Purpose: This program allows the user to add dinosaurs to an arena
+    and have them fight. This file contains main().
+*/
+
 #include "dinofight.h"
 
 int main() {
@@ -11,9 +19,7 @@ int main() {
     cout << stars << endl;
 
     //ask the user for the capacity of the Dino[] array
-    cout << "\nPlease enter the maximum capacity of the dino arena (this must be a whole number): ";
-    size = getValidateInput(1, "capacity");
-
+    size = getValidateInput(1, INT_MAX, "\nPlease enter the maximum capacity of the dino arena.");
     //initializes the Dino pointer to be a dynamically allocated array of the size given by the user
     Dino = new Dinos[size];
 
@@ -34,32 +40,33 @@ int main() {
         cout << "\n2. Print Dinosaurs";
         cout << "\n3. FIGHT!";
         cout << "\n4. End Program";
-        cout << "\n>> ";
 
         //choice retrieval and validation
-        choice = getValidateInput(1, 4, "selection");
+        choice = getValidateInput(1, 4, "");
         
         //choice execution
         switch (choice){
             case 1:
-                enterDinos(Dino, size, total);
+                total = enterDinos(Dino, size, total); //allows the user to enter dinos, total is updated upon returning
                 break;
             case 2:
-                printDinos(Dino, total);
+                printDinos(Dino, total); //prints current dinos in a list
                 break;
             case 3:
-                fight(Dino, total);
+                total = fight(Dino, total); //fights dinos, total is updated upon returning
                 break;
             case 4:
+                saveToFile(Dino, total); //writes the current Dino array to FILENAME
                 break; //this option ends the while loop
         }
     } while (choice != 4);
 
-    //saveToFile();
+    
 
     //deletes the allocated memory for Dino
     delete [] Dino;
 
-    //program ends
+    //program ends, displays exit message
+    cout << "\nGood Fight!\n";
     return 0;
 }
