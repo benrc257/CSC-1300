@@ -5,15 +5,16 @@
     Purpose: To document the moonpie stealing habits of Jane.
 */
 #include <iostream>
+#include <iomanip>
 #include <vector>
 using namespace std;
 
 //prototypes
 void enterStolenMoonpies(vector<int>&, int);
-void totalStolenMoonpies(vector<int>, int);
-void averageStolenMoonpies(vector<int>, int);
-void highestStolenMoonpies(vector<int>, int);
-void lowestStolenMoonpies(vector<int>, int);
+int totalStolenMoonpies(vector<int>, int);
+double averageStolenMoonpies(vector<int>, int);
+int highestStolenMoonpies(vector<int>, int);
+int lowestStolenMoonpies(vector<int>, int);
 
 int main() {
     //variables
@@ -31,22 +32,30 @@ int main() {
     }
     
     //resize the vector
-    moonpie.
+    moonpie.resize(days);
 
     //calls the enter function to request moonpie vector values from the user
     enterStolenMoonpies(moonpie, days);
 
+    //DISPLAY RESULTS
+    cout << "\n************************| RESULTS |************************\n";
+
     //calls the total function to display the total stolen moonpies
-    totalStolenMoonpies(moonpie, days);
+    cout << "\nJane has stolen " << totalStolenMoonpies(moonpie, days) << " Moonpies.\n";
 
     //calls the total function to display the average stolen moonpies
-    averageStolenMoonpies(moonpie, days);
+    cout << "\nJane has stolen an average of " << fixed << setprecision(1) << averageStolenMoonpies(moonpie, days) << " Moonpies.\n";
 
     //calls the total function to display the highest amount of stolen moonpies
-    highestStolenMoonpies(moonpie, days);
+    cout << "\nJane stole a record high of " << highestStolenMoonpies(moonpie, days) << " Moonpies in a single day.\n";
 
     //calls the total function to display the lowest amount of stolen moonpies
-    lowestStolenMoonpies(moonpie, days);
+    cout << "\nJane stole a record low of " << lowestStolenMoonpies(moonpie, days) << " Moonpies in a single day.\n";
+
+    cout << "\n***********************************************************\n" << endl;
+
+    //ends program
+    return 0;
 }
 
 /*
@@ -72,9 +81,9 @@ void enterStolenMoonpies(vector<int>& moonpie, int days) {
 
 /*
     Name: totalStolenMoonpies()
-    Purpose: Add the stolen moonpies and display the result
+    Purpose: Add the stolen moonpies and return the result
 */
-void totalStolenMoonpies(vector<int> moonpie, int days) {
+int totalStolenMoonpies(vector<int> moonpie, int days) {
     //variables
     int total = 0;
 
@@ -83,32 +92,32 @@ void totalStolenMoonpies(vector<int> moonpie, int days) {
         total += moonpie.at(i);
     }
 
-    //displays the total
-    cout << "\nJane has stolen " << total << " Moonpies.\n";
+    //returns the total
+    return total;
 }
 
 /*
     Name: averageStolenMoonpies()
-    Purpose: Average the stolen moonpies and display the result
+    Purpose: Average the stolen moonpies and return the result
 */
-void averageStolenMoonpies(vector<int> moonpie, int days) {
+double averageStolenMoonpies(vector<int> moonpie, int days) {
     //variables
-    int total = 0;
+    double total = 0.0;
 
     //for loop runs and adds the elements together
     for (int i = 0; i < days; i++) {
         total += moonpie.at(i);
     }
 
-    //displays the average
-    cout << "\nJane has stolen an average of " << (total /= days) << " Moonpies.\n";
+    //returns the average
+    return (total/days);
 }
 
 /*
     Name: highestStolenMoonpies()
-    Purpose: Find the highest amount stolen moonpies on a single day and display the result
+    Purpose: Find the highest amount stolen moonpies on a single day and return the result
 */
-void highestStolenMoonpies(vector<int> moonpie, int days) {
+int highestStolenMoonpies(vector<int> moonpie, int days) {
     //variables
     int highest = 0;
 
@@ -119,17 +128,17 @@ void highestStolenMoonpies(vector<int> moonpie, int days) {
         }
     }
 
-    //displays the highest value
-    cout << "\nJane stole a record high of" << highest << " Moonpies in a single day.\n";
+    //returns the highest value
+    return highest;
 }
 
 /*
     Name: lowestStolenMoonpies()
-    Purpose: Find the lowest amount stolen moonpies on a single day and display the result
+    Purpose: Find the lowest amount stolen moonpies on a single day and return the result
 */
-void lowestStolenMoonpies(vector<int> moonpie, int days) {
+int lowestStolenMoonpies(vector<int> moonpie, int days) {
     //variables
-    int lowest = 0;
+    int lowest = INT_MAX;
 
     //for loop runs and finds the smallest element
     for (int i = 0; i < days; i++) {
@@ -138,6 +147,6 @@ void lowestStolenMoonpies(vector<int> moonpie, int days) {
         }
     }
 
-    //displays the lowest value
-    cout << "\nJane stole a record high of" << lowest << " Moonpies in a single day.\n";
+    //returns the lowest value
+    return lowest;
 }
