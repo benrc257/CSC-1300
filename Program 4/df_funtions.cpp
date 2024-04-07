@@ -187,6 +187,9 @@ int enterDinos(Dinos *Dino, int size, int total) {
         //collects and validates the health stat from the user
         Dino[total].stats.health = getValidateInput(1, INT_MAX, "\nPlease enter the dino's maximum health.");
 
+        //displays success message with the dinos name and type
+        cout << "\n" << Dino[total].name << " the " << Dino[total].type << " was successfully added to the arena!";
+
         //increments the total and displays it to the user
         total++;
         cout << "\nThere are now " << total << "/" << size << " dinosaurs in the arena!\n";
@@ -413,7 +416,7 @@ void saveToFile(Dinos *Dino, int total) {
         }
     }
 
-    //closes file
+    //closes file, displays success message
     file.close();
     cout << "\nThe Dinosaurs were succesfully saved to " << FILENAME << "." << endl;
 }

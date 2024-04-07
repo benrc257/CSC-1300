@@ -61,12 +61,10 @@ int main() {
         }
     } while (choice != 4);
 
-    
-
     //deletes the allocated memory for Dino
     delete [] Dino;
 
     //program ends, displays exit message
-    cout << "\nGood Fight!\n";
+    cout << "Good Fight!\n\n";
     return 0;
 }

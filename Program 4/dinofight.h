@@ -32,7 +32,6 @@ struct Dinos {
 void printArt();
 void delay(int);
 int getValidateInput(int, int, string);
-int getValidateInput(int, string);
 int getValidateInput(char, char, string);
 int preloadDinos(Dinos *, int);
 int enterDinos(Dinos *, int, int);
