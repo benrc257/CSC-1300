@@ -1,3 +1,11 @@
+/*
+	Title: df_functions.cpp
+	Author: Benjamin Clark
+	Date: 4/1/24
+	Purpose: This program allows the user to add dinosaurs to an arena
+    and have them fight. This file contains function definitions.
+*/
+
 #include "dinofight.h"
 
 /*
@@ -34,42 +42,22 @@ void delay(int delay) {
 /*
     Name: getValidateInput() [TWO INTEGERS GIVEN]
     Purpose: Retrieves and validates user's input of an integer. The integer will be returned if it is between
-    or includes the highest and lowest values given. Uses the value of string type to display the error message.
+    or includes the highest and lowest values given. Uses the value of string message to display the prompt.
 */
-int getValidateInput(int lowest, int highest, string type) {
+int getValidateInput(int lowest, int highest, string message) {
     //variables
     int input;
     bool done = false;
 
+    //outputs prompt for user
+    cout << message << "\n>> ";
+
+    //validates user input until a valid input is received
     do {
         if (!(cin >> input) || (input < lowest || input > highest)) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Invalid " << type << ". Please enter a whole number between " << lowest << " and " << highest << ".\n";
-            done = false;
-        } else {
-            done = true;
-        }
-    } while (!done);
-
-    return input;
-}
-
-/*
-    Name: getValidateInput() [ONE INTEGER GIVEN]
-    Purpose: Retrieves and validates user's input of an integer. The integer will be returned if it is greater than minimum value given.
-    Uses the value of string type to display the error message.
-*/
-int getValidateInput(int minimum, string type) {
-    //variables
-    int input;
-    bool done = false;
-
-    do {
-        if (!(cin >> input) || input < minimum) {
-            cin.clear();
-            cin.ignore(10000, '\n');
-            cout << "Invalid " << type << ". Please enter a whole number greater than "<< minimum << ".";
+            cout << "Invalid input. Please enter a whole number between " << lowest << " and " << highest << ".";
             cout << "\n>> ";
             done = false;
         } else {
@@ -77,24 +65,29 @@ int getValidateInput(int minimum, string type) {
         }
     } while (!done);
 
+    //returns the user's input
     return input;
 }
 
 /*
     Name: getValidateInput() [TWO CHARACTERS GIVEN]
     Purpose: Retrieves and validates user's input of a character. 1 will be returned if the input matches char1.
-    0 will be returned if the input matches char2. Uses the value of string type to display the error message.
+    0 will be returned if the input matches char2. Uses the value of string message to display the prompt.
 */
-int getValidateInput(char char1, char char2, string type) {
+int getValidateInput(char char1, char char2, string message) {
     //variables
     char input;
     bool done = false;
 
+    //outputs prompt for user
+    cout << message << "\n>> ";
+
+    //validates user input until a valid input is received
     do {
         if (!(cin >> input) || (tolower(input) != tolower(char1) && tolower(input) != tolower(char2))) {
             cin.clear();
             cin.ignore(10000, '\n');
-            cout << "Invalid " << type << ". Please enter " << toupper(char1) << " or " << toupper(char2) << ".";
+            cout << "Invalid input. Please enter " << (toupper(char1)) << " or " << (toupper(char2)) << ".";
             cout << "\n>> ";
             done = false;
         } else {
@@ -102,6 +95,7 @@ int getValidateInput(char char1, char char2, string type) {
         }
     } while (!done);
 
+    //returns 1(char1) or 0(char2)
     if (input == char1) {
         return 1;
     } else {
@@ -127,7 +121,7 @@ int preloadDinos(Dinos *Dino, int size) {
         return -1;
     }
 
-    //runs through the file and writes data to the array
+    //runs through the file and writes data to the array, displaying each added dinosaur to the user
     for (int i = 0; i < size; i++) {
         if (file.peek() != EOF) {
             getline(file, Dino[i].type, '#');
@@ -137,10 +131,12 @@ int preloadDinos(Dinos *Dino, int size) {
             file >> Dino[i].stats.health;
             file.ignore(1);
             total++;
+            cout << "\n" << Dino[i].name << " the " << Dino[i].type << " has been added to the arena!";
         } else {
             break;
         }
     }
+    cout << endl;
 
     //closes FILENAME
     file.close();
@@ -153,7 +149,7 @@ int preloadDinos(Dinos *Dino, int size) {
     Name: enterDinos()
     Purpose: Adds Dinos to the array and increments the total number of dinos
 */
-void enterDinos(Dinos *Dino, int size, int& total) {
+int enterDinos(Dinos *Dino, int size, int total) {
 
     //the loop runs continously until the array is full or the user is finished
     do {
@@ -161,22 +157,13 @@ void enterDinos(Dinos *Dino, int size, int& total) {
         if (total >= size) {
             cout << "\nSorry, your arena is full! You cannot add more dinosaurs.";
             cout << "\nReturning to main menu..." << endl;
-            return;
+            return total;
         }
 
-        //asks for and validates the inputs for each of the dino's attributes
-        cout << "\nPlease enter the dino's name.";
+        //collects and validates the dino's species from the user
+        cout << "\nPlease enter the dino's species.";
         cout << "\n>> ";
         cin.ignore();
-        while (!getline(cin, Dino[total].name)) {
-            cin.clear();
-            cin.ignore(10000, '\n');
-            cout << "\nInvalid name! Please enter a different name.";
-            cout << "\n>> ";
-        }
-
-        cout << "\nPlease enter " << Dino[total].name << "'s species.";
-        cout << "\n>> ";
         while (!getline(cin, Dino[total].type)) {
             cin.clear();
             cin.ignore(10000, '\n');
@@ -184,13 +171,24 @@ void enterDinos(Dinos *Dino, int size, int& total) {
             cout << "\n>> ";
         }
 
-        cout << "\nPlease enter " << Dino[total].name << "'s attack power.";
+        //collects and validates the dino's name from the user
+        cout << "\nPlease enter the dino's name.";
         cout << "\n>> ";
-        Dino[total].stats.hit = getValidateInput(1, "attack power");
+        while (!getline(cin, Dino[total].name)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "\nInvalid name! Please enter a different name.";
+            cout << "\n>> ";
+        }
 
-        cout << "\nPlease enter " << Dino[total].name << "'s maximum health.";
-        cout << "\n>> ";
-        Dino[total].stats.health = getValidateInput(1, "health");
+        //collects and validates the hit stat from the user
+        Dino[total].stats.hit = getValidateInput(1, INT_MAX, "\nPlease enter the dino's attack power.");
+
+        //collects and validates the health stat from the user
+        Dino[total].stats.health = getValidateInput(1, INT_MAX, "\nPlease enter the dino's maximum health.");
+
+        //displays success message with the dinos name and type
+        cout << "\n" << Dino[total].name << " the " << Dino[total].type << " was successfully added to the arena!";
 
         //increments the total and displays it to the user
         total++;
@@ -200,14 +198,15 @@ void enterDinos(Dinos *Dino, int size, int& total) {
         if (total >= size) {
             cout << "\nYour arena is now full! You cannot add more dinosaurs.";
             cout << "\nReturning to main menu..." << endl;
-            return;
+            return total;
         }
 
-        //determines if the user would like to continue addings dinos
-        cout << "\nAdd more dinos? (y/n) ";
-    } while (getValidateInput('y', 'n', "choice"));
+    //determines if the user would like to continue addings dinos
+    } while (getValidateInput('y', 'n', "\nAdd more dinos? (y/n)"));
 
+    //returns the new total amount of dinos
     cout << "\nReturning to main menu..." << endl;
+    return total;
 }
 
 /*
@@ -240,7 +239,7 @@ void printDinos(Dinos *Dino, int total) {
     Name: deleteDino()
     Purpose: Removes a single dino from the array
 */
-void deleteDino(Dinos *Dino, Dinos *slain, int& total) {
+int deleteDino(Dinos *Dino, Dinos *slain, int total) {
     //variables
     int pos = 0;
 
@@ -255,8 +254,8 @@ void deleteDino(Dinos *Dino, Dinos *slain, int& total) {
         Dino[i].stats.hit = Dino[i+1].stats.hit;
     }
 
-    //decrements the total by 1
-    total--;
+    //decrements the total by 1 and returns it
+    return (total-1);
 }
 
 /*
@@ -264,12 +263,12 @@ void deleteDino(Dinos *Dino, Dinos *slain, int& total) {
     Purpose: Allows the user to select two dinos and have them fight, then updates the remaining total of dinos
     Note: This function does not permanently effect a dinosaur's hitpoints
 */
-void fight(Dinos *Dino, int& total) {
+int fight(Dinos *Dino, int total) {
     //variables
-    string stars(40, '*'), lines(40, '-');
+    string stars(40, '*');
     Dinos *hitter, *receiver;
-    bool running = true, alive = true;
-    int choice1, choice2, health1, health2, attack, attack1, attack2, *attackTrack, receiverHP;
+    bool alive = true;
+    int choice1, choice2, attack, attack1, attack2, *attackTrack;
     int d = 1; //sets the delay of the delay() function
 
     //seed random number generator for later
@@ -283,7 +282,7 @@ void fight(Dinos *Dino, int& total) {
         if (total < 2) {
             cout << "\n\nThere must be at least two dinosaurs in the arena to fight.";
             cout << "\nSelect option 1 to add more dinos! Returning to main menu...\n";
-            return;
+            return total;
         }
 
         //continuinging fight welcome text
@@ -298,45 +297,36 @@ void fight(Dinos *Dino, int& total) {
         }
 
         //receiving and validating the user's first choice
-        cout << "\n\nSelect the first dinosaur.";
-        cout << "\n>> ";
-        choice1 = getValidateInput(1, total, "choice");
+        choice1 = getValidateInput(1, total, "\n\nSelect the first dinosaur.");
         cout << "\nFighter " << choice1 << ", " << Dino[(choice1-1)].name << " the " << Dino[(choice1-1)].type << ", selected!";
 
         //receiving and validating the user's second choice
-        cout << "\n\nSelect the second dinosaur.";
-        cout << "\n>> ";
-        choice2 = getValidateInput(1, total, "choice");
+        choice2 = getValidateInput(1, total, "\n\nSelect the second dinosaur.");
+
+        //runs until the output of choice2 = getValidateInput is different from choice1
         while (choice2 == choice1) {
-            cout << "Fighter " << choice1 << " has already been selected.\n";
-            cout << ">> ";
-            choice2 = getValidateInput(1, total, "choice");
+            cout << "Fighter " << choice1 << " has already been selected.";
+            choice2 = getValidateInput(1, total, "\n\nSelect the second dinosaur.");
         }
         cout << "\nFighter " << choice2 << ", " << Dino[(choice2-1)].name << " the " << Dino[(choice2-1)].type << ", selected!";
 
         //FIGHTING BEGINS HERE
         cout << "\n\nREADY, SET, FIGHT!\n";
 
-        //obtains the health values for both fighters and assigns them to health1 and health2
-        //this is done to avoid permanently affecting the dino's health pools
-        health1 = Dino[(choice1-1)].stats.health;
-        health2 = Dino[(choice2-1)].stats.health;
-
         //for loop runs three times or until a dino dies
         for (int i=0; (i < 3 && alive); i++) {
             //generates the random order of attack
             attack = rand()%(2)+1;
 
-            //asigns hitter and receiver based off order
+            //assigns hitter and receiver pointers based off order
+            //this was done to avoid writing multiple sets of fighting code
             if (attack == 1) {
                 hitter = &Dino[(choice1-1)];
                 receiver = &Dino[(choice2-1)];
-                receiverHP = health2;
                 attackTrack = &attack1;
             } else {
                 hitter = &Dino[(choice2-1)];
                 receiver = &Dino[(choice1-1)];
-                receiverHP = health1;
                 attackTrack = &attack2;
             }
 
@@ -344,14 +334,14 @@ void fight(Dinos *Dino, int& total) {
             attack = rand()%(10)+1;
 
             //reassigns attack to the hitter's attack power divided by the randomly generated value,
-            //then adds it to the attacker's total damage dealt
+            //then adds it to the hitters's total damage dealt using the attackTrack pointer
             attack = (*hitter).stats.hit / attack;
             *attackTrack += attack;
 
-            //subtracts attack's value from the receivers current health.
-            receiverHP -= attack;
-            if (receiverHP < 0) {
-                receiverHP = 0;
+            //subtracts attack's value from the receivers current health, correcting negative values to 0
+            (*receiver).stats.health -= attack;
+            if ((*receiver).stats.health < 0) {
+                (*receiver).stats.health = 0;
             }
 
             //displays round results
@@ -360,15 +350,15 @@ void fight(Dinos *Dino, int& total) {
             delay(d);
             cout << (*hitter).name << " the " << (*hitter).type << " attacked, dealing " << attack << " damage!\n";
             delay(d);
-            cout << (*receiver).name << " the " << (*receiver).type << " now has " << receiverHP << " health remaining!\n";
+            cout << (*receiver).name << " the " << (*receiver).type << " now has " << (*receiver).stats.health << " health remaining!\n";
 
-            //displays a death message if a dino hits 0 hitpoints
-            if (!receiverHP) {
+            //displays a death message if a dino hits 0 hitpoints and deletes the corresponding dino
+            if (!((*receiver).stats.health)) {
                 delay(d);
                 cout << (*receiver).name << " the " << (*receiver).type << " has fallen in battle!\n";
                 delay(d);
-                cout << (*receiver).name << " the " << (*receiver).type << " has been removed from the arena.\n";
-                deleteDino(Dino, receiver, total);
+                cout << (*receiver).name << " the " << (*receiver).type << " has been cremated.\n";
+                total = deleteDino(Dino, receiver, total); //returns the decremented total
                 alive = false;
             }
             
@@ -376,7 +366,7 @@ void fight(Dinos *Dino, int& total) {
 
         //displays fight results
         delay(d);
-        cout << "\n" << lines << "| RESULTS |" << lines << endl;
+        cout << "\n" << stars << "| RESULTS |" << stars << endl;
         delay(d);
 
         if (!alive) {
@@ -394,10 +384,39 @@ void fight(Dinos *Dino, int& total) {
         cout << "\n" << stars << "***********" << stars << endl;
         delay(d);
 
-        //asks the user if they would like to fight again
-        cout << "\nThe fight has concluded. Fight again? (y/n)";
-        cout << "\n>> ";
-        running = getValidateInput('y', 'n', "choice");
+    //asks the user if they would like to fight again
+    } while (getValidateInput('y', 'n', "\nThe fight has concluded. Fight again? (y/n)"));
 
-    } while (running);
+    //returns the updated total of dinosaurs
+    return total;
+}
+
+/*
+    Name: saveToFile()
+    Purpose: Writes the current Dino array to FILENAME. This overwrites the existing data in FILENAME.
+*/
+void saveToFile(Dinos *Dino, int total) {
+    //variables
+    ofstream file;
+
+    //opens the file
+    file.open(FILENAME, ios::trunc);
+
+    //detects if file opened correctly, returns and displays error message if not
+    if (!file.is_open()) {
+        cout << "\n" << FILENAME << " could not be opened. The Dinosaurs were not saved.";
+        return;
+    }
+    
+    //writes data from array to file
+    if (total > 0) {
+        file << (*(Dino)).type << "#" << (*(Dino)).name << "#" << (*(Dino)).stats.hit << "#" << (*(Dino)).stats.health;
+        for (int i=1; i < total; i++) {
+            file << "#" <<(*(Dino+i)).type << "#" << (*(Dino+i)).name << "#" << (*(Dino+i)).stats.hit << "#" << (*(Dino+i)).stats.health;
+        }
+    }
+
+    //closes file, displays success message
+    file.close();
+    cout << "\nThe Dinosaurs were succesfully saved to " << FILENAME << "." << endl;
 }
