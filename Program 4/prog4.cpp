@@ -62,6 +62,9 @@ int main() {
     } while (choice != 4);
 
     //deletes the allocated memory for Dino
+    for (int i=0; i<size; i++) {
+        delete &Dino[i];
+    }
     delete [] Dino;
 
     //program ends, displays exit message
